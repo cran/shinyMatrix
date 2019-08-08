@@ -219,7 +219,7 @@ function isEmpty(obj) {
                 $(this).removeClass("matrix-input-cell-pasted");
                 void this.offsetWidth;
             });
-            $("input", tableEl).blur();
+            $("input", tableEl).trigger("updateInput");
 
             var clipboardData = e.clipboardData ||
                 window.clipboardData ||
@@ -247,6 +247,10 @@ function isEmpty(obj) {
 
     function addInputBindings(inputEl) {
         inputEl.on("blur", function(){
+            $(this).trigger("updateInput");
+        });
+
+        inputEl.on("updateInput", function(){
             var el = $(this).closest(".matrix-input");
 
             $(this).closest(".matrix-input").trigger("change");
@@ -319,7 +323,7 @@ function isEmpty(obj) {
 
             if (nextCell.length > 0){
                 $(nextCell).click();
-                $(this).blur();
+                $(this).trigger("updateInput");
             }
             e.preventDefault();
         });
@@ -360,9 +364,9 @@ function isEmpty(obj) {
     };
 
     function addHeaderBinding(tableEl, selector) {
-        $(selector, tableEl).off("dblclick");
+        $(selector, tableEl).off("click");
 
-        $(selector, tableEl).dblclick(function(e){
+        $(selector, tableEl).click(function(e){
             var inputEl = createInput($(this).text());
 
             inputEl.select();
@@ -377,6 +381,10 @@ function isEmpty(obj) {
 
     function addHeaderInputBindings(inputEl) {
         inputEl.on("blur", function(){
+            $(this).trigger("updateInput");
+        });
+
+        inputEl.on("updateInput", function(){
             var el = $(inputEl).closest(".matrix-input");
 
             $(this).closest(".matrix-input").trigger("change");
@@ -387,7 +395,7 @@ function isEmpty(obj) {
 
         inputEl.on("keydown", function(e){
             if (e.keyCode == 13){
-                $(this).blur();
+                $(this).trigger("updateInput");
                 e.preventDefault();
             }
         });
@@ -446,7 +454,7 @@ function isEmpty(obj) {
         $(document).on("copy", function(e){
             if ($("td.matrix-input-cell-selected", el).length == 0) return;
 
-            $("input", el).blur();
+            $("input", el).trigger("updateInput");
 
             var clipboardData = e.clipboardData ||
                 window.clipboardData ||
@@ -514,7 +522,7 @@ function isEmpty(obj) {
     };
 
     function setValue(el, value) {
-        $("input", el).blur();
+        $("input", el).trigger("updateInput");
 
         var options = $(el).data("options");
 
@@ -647,7 +655,8 @@ function isEmpty(obj) {
                 updated = true;
                 for (i = nrow; i < nrow + delta - nrow % delta; i++){
                     newval.data[i] = [];
-                    newval.rownames[i] = "";
+                    if (newval.rownames)
+                        newval.rownames[i] = "";
                     for (j = 0; j < ncol; j ++){
                         newval.data[i][j] = "";
                     }
@@ -676,7 +685,8 @@ function isEmpty(obj) {
 
                 updated = true;
                 for (j = ncol; j < ncol + delta - ncol % delta; j++){
-                    newval.colnames[j] = "";
+                    if (newval.colnames)
+                        newval.colnames[j] = "";
                     for (i = 0; i < nrow; i ++){
                         newval.data[i][j] = "";
                     }
