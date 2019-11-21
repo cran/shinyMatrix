@@ -1,6 +1,6 @@
 Package: shinyMatrix
 Title: Shiny Matrix Input Field
-Version: 0.2.0
+Version: 0.3.0
 Author: Andreas Neudecker
 Maintainer: Andreas Neudecker <andreas.neudecker@inwt-statistics.de>
 Description: Implements a custom matrix input field. 
@@ -12,6 +12,6 @@ Imports: shiny, jsonlite
 Suggests: testthat, covr
 RoxygenNote: 6.1.1
 NeedsCompilation: no
-Packaged: 2019-08-08 05:37:05 UTC; laneudecker
+Packaged: 2019-11-21 11:23:39 UTC; mwyss
 Repository: CRAN
-Date/Publication: 2019-08-08 07:00:02 UTC
+Date/Publication: 2019-11-21 12:00:03 UTC
