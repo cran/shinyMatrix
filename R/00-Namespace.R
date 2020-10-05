@@ -1,2 +1,2 @@
-#' @importFrom shiny runApp tagList singleton tags
+#' @importFrom shiny runApp tagList singleton tags div
 NULL
