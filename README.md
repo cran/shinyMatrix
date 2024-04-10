@@ -1,14 +1,12 @@
----
-title: Matrix Input for Shiny
----
+# Matrix Input for Shiny
 
-[![Travis-CI Build Status](https://travis-ci.org/INWTlab/shiny-matrix.svg?branch=master)](https://travis-ci.org/INWTlab/shiny-matrix)
-[![Coverage Status](https://img.shields.io/codecov/c/github/INWTlab/shiny-matrix/master.svg)](https://codecov.io/github/INWTlab/shiny-matrix?branch=master)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/shinyMatrix)](https://cran.r-project.org/package=shinyMatrix)
+[![R-CMD-check](https://github.com/INWTlab/shiny-matrix/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/INWTlab/shiny-matrix/actions/workflows/R-CMD-check.yaml)
+[![Coverage Status](https://img.shields.io/codecov/c/github/INWTlab/shiny-matrix/master.svg)](https://app.codecov.io/github/INWTlab/shiny-matrix?branch=master)
+[![CRAN status](https://www.r-pkg.org/badges/version/shinyMatrix)](https://cran.r-project.org/package=shinyMatrix)
 
 # Matrix Input for Shiny
 
-This package provides an input field to enter matrix conveniently in a shiny application. It supports tabbing and jumping linewise in the matrix, copy-pasting from other spread sheets applications.
+This package provides an input field to enter matrix conveniently in a shiny application. It supports tabbing and jumping linewise in the matrix.
 
 ![Screenshot Simple Matrix](https://github.com/INWTlab/shiny-matrix/raw/master/screenshot1.png)
 
@@ -130,10 +128,19 @@ startApplication("appUpdate")
 startApplication("appRownames")
 ```
 
+### Uneditable cells
+
+- Make table cells uneditable
+- No clicking into cells, no changing values
+
+```r
+startApplication("appUneditableCells")
+```
+
 ### Extend Matrix Automatically
 
 - If matrix is full (last row and columns contain values) rows and columns are added automatically 
-- Copy pasting functionality enabled
+
 
 ```r
 startApplication("appExtend")

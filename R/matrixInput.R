@@ -19,6 +19,12 @@
 #' have the table element and the data object as argument}
 #'   \item{getHeader}{same as createHeader but with table element as only argument}
 #' }
+#' 
+#' Similarly, the parameter `cells` takes a list of arguments:
+#' 
+#' \describe{
+#'   \item{editableCells}{logical, should cells be editable (default `TRUE`)}
+#' }
 #'
 #' @param inputId The input slot that will be used to access the value
 #' @param label label for input field
@@ -28,18 +34,21 @@
 #' are supported
 #' @param rows list of options to configure rows 
 #' @param cols list of options to configure cols
+#' @param cells list of options to configure cells
 #' @param paste old argument
 #' @param copy old argument
 #' @param copyDoubleClick old argument
 #' @param pagination Use pagination to display matrix
 #' @param lazy lazy updating of server values. The new values are only sent to the server when no input field is visible
-#'
+#' @param formatCell format to be used for formatting cell values, i.e. ".2f" . This uses d3-format (https://d3js.org/d3-format)
+#' 
 #' @examples
 #' matrixInput(
 #'   "myMatrix",
 #'   value = diag(3),
 #'   rows = list(names = FALSE),
-#'   cols = list(names = FALSE)
+#'   cols = list(names = FALSE),
+#'   cells = list(editableCells = FALSE)
 #' )
 #'
 #' @export
@@ -49,12 +58,14 @@ matrixInput <- function(inputId,
                         inputClass = "",
                         rows = list(),
                         cols = list(),
+                        cells = list(),
                         class = "character",
                         paste = FALSE,
                         copy = FALSE,
                         copyDoubleClick = FALSE,
                         pagination = FALSE,
-                        lazy = FALSE){
+                        lazy = FALSE,
+                        formatCell = NULL){
   stopifnot(is.matrix(value))
 
   if (copy || paste || copyDoubleClick) {
@@ -66,6 +77,7 @@ matrixInput <- function(inputId,
 
   rows <- default(rows, list(names = TRUE, editableNames = FALSE, extend = FALSE, delta = 1))
   cols <- default(cols, list(names = TRUE, editableNames = FALSE, extend = FALSE, delta = 1))
+  cells <- default(cells, list(editableCells = TRUE))
 
   inputField <- tags$div(
     id = inputId,
@@ -75,14 +87,17 @@ matrixInput <- function(inputId,
     "data-colnames" = jsonlite::toJSON(colnames(value)),
     "data-rows" = jsonlite::toJSON(rows, auto_unbox = TRUE),
     "data-cols" = jsonlite::toJSON(cols, auto_unbox = TRUE),
+    "data-cells" = jsonlite::toJSON(cells, auto_unbox = TRUE),
     "data-class" = jsonlite::toJSON(class, auto_unbox = FALSE),
     "data-pagination" = jsonlite::toJSON(pagination, auto_unbox = TRUE),
     "data-lazy" = jsonlite::toJSON(lazy, auto_unbox = TRUE),
+    "data-format-cell" = formatCell,
     tags$div(class = "vue-element")
   )
 
   tagList(
     singleton(tags$head(tags$script(src="shinyMatrix/lodash.min.js"))),
+    singleton(tags$head(tags$script(src="shinyMatrix/d3-format.min.js"))),
     singleton(tags$head(tags$script(src="shinyMatrix/vue.js"))),
     singleton(tags$head(tags$script(src = "shinyMatrix/matrix-input.js"))),
     singleton(tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "shinyMatrix/matrix-input.css"))),
